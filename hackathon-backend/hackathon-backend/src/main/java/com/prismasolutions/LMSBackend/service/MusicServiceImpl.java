@@ -1,6 +1,5 @@
 package com.prismasolutions.LMSBackend.service;
 
-import com.google.gson.JsonObject;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,7 @@ public class MusicServiceImpl implements MusicService {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        JSONArray arrayToSend = new JSONArray();
-        List<String> titlesFinal = new ArrayList<String>();
+        List<String> titlesFinal = new ArrayList<>();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             JSONObject jsonObject = new JSONObject(response.body());
@@ -41,8 +39,6 @@ public class MusicServiceImpl implements MusicService {
             JSONObject movieTitlesJSON = movieNames.getJSONObject("message");
 
             Iterator<String> movieKeys = movieTitlesJSON.keys();
-
-
             while(movieKeys.hasNext()) {
                 String key = movieKeys.next();
                 String titles = movieTitlesJSON.getString(key);
@@ -55,16 +51,15 @@ public class MusicServiceImpl implements MusicService {
                         getAllMoviesByMusic(musicTitle);
                     }
                     titlesString = titlesString.replace("{'name': '", "");
-                    titlesString = titlesString.replace("'}, ", "|");
+                    titlesString = titlesString.replace("'}, ", "/~");
                     titlesString = titlesString.replace("'}", "");
                     titlesString = titlesString.replace("[", "");
                     titlesString = titlesString.replace("]", "");
-                    notGoodIndex = titlesString.indexOf("|");
+                    notGoodIndex = titlesString.indexOf("/");
                     if(notGoodIndex == -1 ) {
                         getAllMoviesByMusic(musicTitle);
                     }
-                    titlesFinal = Arrays.asList(titlesString.split("//|"));
-//                    titlesFinal = Arrays.asList(titlesString);
+                    titlesFinal = Arrays.asList(titlesString.split("/~"));
                 }
             }
             System.out.println(titlesFinal);
