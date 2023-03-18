@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface StreamService {
 
-    MovieDto getAllByTitle(String title) throws IOException, JSONException;
+    List<MovieDto> getAllByTitle(String title) throws IOException, JSONException;
 }
