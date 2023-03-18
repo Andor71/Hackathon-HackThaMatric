@@ -1,0 +1,22 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="2022_09_23_14:00_created_user" author="ofischer">
+        <createTable tableName="user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="varchar(64)"/>
+            <column name="last_name" type="varchar(64)"/>
+            <column name="email" type="varchar(64)"/>
+            <column name="password" type="varchar(64)"/>
+            <column name="user_image" type="varchar(64)"/>
+            <column name="validation_code" type="varchar(32)"/>
+            <column name="active" type="boolean" />
+            <column name="role" type="varchar(64)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
