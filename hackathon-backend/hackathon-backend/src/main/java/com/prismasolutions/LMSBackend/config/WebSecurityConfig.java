@@ -27,35 +27,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors()
-                .and()
-                .csrf()
-                .disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/user/register",
-                        "/user/login",
-                        "/user/start-password-recovery",
-                        "/user/change-password")
-                .permitAll()
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/user/verify-recovery-code/*",
-                        "/user/health-check")
-                .permitAll()
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.PATCH, "/user/activate/*")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .addFilterAfter(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.authorizeRequests().antMatchers("/").permitAll();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("HEAD",
                 "GET", "POST", "PUT", "DELETE", "PATCH"));
         // setAllowCredentials(true) is important, otherwise:
