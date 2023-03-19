@@ -1,25 +1,25 @@
 package com.prismasolutions.LMSBackend.service;
 
 import com.prismasolutions.LMSBackend.Dto.MovieDto;
+import com.prismasolutions.LMSBackend.Dto.MoviesByStreamingDto;
 import com.prismasolutions.LMSBackend.util.Utility;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 @Service
 @AllArgsConstructor
 public class StreamServiceImpl implements StreamService {
 
     private final Utility utility;
     @Override
-    public List<MovieDto> getAllByTitle(String title) throws IOException, JSONException {
+    public List<MoviesByStreamingDto> getAllByTitle(String title) throws IOException, JSONException {
 
         String url = "https://streaming-availability.p.rapidapi.com/v2/search/title";
         String apiKey = "1f6ac10dcamsh091a1e09cced23ap1d57afjsn886a6d651fd1"; // ide helyettesítsd be a saját API kulcsodat
@@ -48,10 +48,40 @@ public class StreamServiceImpl implements StreamService {
         }
         responseReader.close();
 
-        List<MovieDto> movieDto = utility.convertJSONToMovieDto(response.toString());
-        // válasz feldolgozása
-//        System.out.println(response.toString());
+        List<MovieDto> movieDtos = utility.convertJSONToMovieDto(response.toString());
 
-        return movieDto;
+        List<MoviesByStreamingDto> moviesByGenreDtos = new ArrayList<>();
+
+        List<String> streaming = new ArrayList<>();
+
+        for(MovieDto movies : movieDtos){
+            for(int i = 0 ; i < movies.getStreamingInfoDto().getStreamingDto().size(); i++){
+                if(!streaming.contains(movies.getStreamingInfoDto().getStreamingDto().get(i).getName())){
+                    streaming.add(movies.getStreamingInfoDto().getStreamingDto().get(i).getName());
+                }
+            }
+        }
+
+        Long id = Long.valueOf(0);
+        for(String stream : streaming){
+            MoviesByStreamingDto moviesByStreamingDto = new MoviesByStreamingDto();
+            moviesByStreamingDto.setId(id++);
+            moviesByStreamingDto.setStreaming(stream);
+            moviesByStreamingDto.setMovies(new ArrayList<>());
+            moviesByGenreDtos.add(moviesByStreamingDto);
+        }
+
+        for(MoviesByStreamingDto moviesByStreamingDto : moviesByGenreDtos){
+            for(int i = 0 ; i < movieDtos.size() ; i++) {
+                for(int j = 0 ; j < movieDtos.get(i).getStreamingInfoDto().getStreamingDto().size(); j++){
+                    if (movieDtos.get(i).getStreamingInfoDto().getStreamingDto().get(j).getName().equals(moviesByStreamingDto.getStreaming())) {
+                        moviesByStreamingDto.getMovies().add(movieDtos.get(i));
+                    }
+                }
+
+            }
+        }
+
+        return moviesByGenreDtos;
     }
 }
