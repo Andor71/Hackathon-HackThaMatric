@@ -3,6 +3,7 @@ package com.prismasolutions.LMSBackend.controller;
 
 import com.prismasolutions.LMSBackend.service.StreamService;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +29,10 @@ public class StreamController {
     {
         try{
             return ResponseEntity.ok().body(streamService.getAllByTitle(title));
-        }catch (Exception e){
+        }catch (JSONException e){
+            return ResponseEntity.status(301).build();
+        }
+        catch (Exception e){
             return  ResponseEntity.badRequest().build();
         }
     }
