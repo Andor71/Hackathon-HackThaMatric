@@ -29,4 +29,14 @@ public class SoundtrackController {
             return  ResponseEntity.badRequest().build();
         }
     }
+    @PostMapping("/get-link")
+    public  ResponseEntity<?> getMusicLink(@RequestParam String musicTitle)
+    {
+        log.info("Entered in getMusicLink");
+        try{
+            return ResponseEntity.ok().body(soundTrackService.getMusicLink(musicTitle));
+        }catch (Exception e){
+            return  ResponseEntity.badRequest().build();
+        }
+    }
 }
