@@ -62,8 +62,8 @@ public class SoundTrackServiceImpl implements SoundTrackService {
     @Override
     public List<MusicDto> getSoundtrack(String movieTitle) throws JSONException {
         String serviceUrl = "https://api.openai.com/v1/chat/completions";
-        String bearerToken = "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";
-        String requestBody = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"Add visza az összes zene számot a következő című filmből: "+movieTitle+" , a választ add vissza ebben a formában : [{'musicTitle'}]\"}]}";
+        String bearerToken = "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";
+        String requestBody = "{\"model\": \"gpt-3.5-turbo\", \"temperature\": 0.2, \"messages\": [{\"role\": \"system\", \"content\": \"you are an assistant who responds with lists only, no extra text\"},{\"role\": \"user\", \"content\": \"Give me the tracks from the movie with the title: "+movieTitle+" , in the following format : [{'musicTitle'}];. Only a list is needed\"}]}";
 
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -76,9 +76,23 @@ public class SoundTrackServiceImpl implements SoundTrackService {
         List<String> titlesFinal = new ArrayList<>();
         List<MusicDto> musics = new ArrayList<>();
         try {
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            JSONObject jsonObject = new JSONObject(response.body());
+            HttpResponse<String> response = null;
+            JSONObject jsonObject = null;
+            while (true){
+                response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                jsonObject = new JSONObject(response.body());
+                System.out.println("ddd");
+                System.out.println(response.body());
 
+                System.out.println(response.body().isEmpty());
+                System.out.println( response.body().isBlank());
+                System.out.println( response.body() == "[]");
+                System.out.println( response.body() == "");
+                if(!response.body().isEmpty() || !response.body().isBlank() || response.body() != "[]"){
+                    System.out.println("break");
+                    break;
+                }
+            }
             JSONArray movieNamesArray = jsonObject.getJSONArray("choices");
             JSONObject movieNames = movieNamesArray.getJSONObject(0);
 
@@ -120,7 +134,7 @@ public class SoundTrackServiceImpl implements SoundTrackService {
                 }
             }
         }catch (JSONException e){
-            throw e;
+
         }
         catch (Exception e) {
             e.printStackTrace();

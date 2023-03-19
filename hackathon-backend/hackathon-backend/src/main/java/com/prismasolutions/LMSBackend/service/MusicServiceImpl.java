@@ -17,8 +17,8 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public List<String> getAllMoviesByMusic(String musicTitle) {
         String serviceUrl = "https://api.openai.com/v1/chat/completions";
-        String bearerToken = "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";
-        String requestBody = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"Add visza az összes filmet amikben benne van ez a zene szám: '"+ musicTitle +"', a választ add vissza ebben a formában : [{'name': 'movieName'}]\"}]}";
+        String bearerToken = "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";
+        String requestBody = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"Give me every movie that contains the track with the title '"+ musicTitle +"', in the following format : [{'name': 'movieName'}]\"}]}";
 
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -32,6 +32,16 @@ public class MusicServiceImpl implements MusicService {
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             JSONObject jsonObject = new JSONObject(response.body());
+            System.out.println("ss");
+            while (true){
+                if(jsonObject.has("choices")){
+                    System.out.println("ff");
+                    break;
+                }
+                System.out.println("dd");
+                response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                jsonObject = new JSONObject(response.body());
+            }
 
             JSONArray movieNamesArray = jsonObject.getJSONArray("choices");
             JSONObject movieNames = movieNamesArray.getJSONObject(0);
@@ -47,18 +57,18 @@ public class MusicServiceImpl implements MusicService {
                     String titlesString = titles.trim();
 
                     int notGoodIndex = titlesString.indexOf("Sorry, as an AI language model");
-                    if(notGoodIndex != -1){
-                        getAllMoviesByMusic(musicTitle);
-                    }
+//                    if(notGoodIndex != -1){
+//                        getAllMoviesByMusic(musicTitle);
+//                    }
                     titlesString = titlesString.replace("{'name': '", "");
                     titlesString = titlesString.replace("'}, ", "/~");
                     titlesString = titlesString.replace("'}", "");
                     titlesString = titlesString.replace("[", "");
                     titlesString = titlesString.replace("]", "");
                     notGoodIndex = titlesString.indexOf("/");
-                    if(notGoodIndex == -1 ) {
-                        getAllMoviesByMusic(musicTitle);
-                    }
+//                    if(notGoodIndex == -1 ) {
+//                        getAllMoviesByMusic(musicTitle);
+//                    }
                     titlesFinal = Arrays.asList(titlesString.split("/~"));
                 }
             }

@@ -23,7 +23,7 @@ public class StreamServiceImpl implements StreamService {
 
 
         String url = "https://streaming-availability.p.rapidapi.com/v2/search/title";
-        String apiKey = "94de3a99d3msh8fe41434776a203p173f5fjsn8a5adb7b5f3d"; // ide helyettesítsd be a saját API kulcsodat
+        String apiKey = "bb402aaa7dmsh91aa4e3a0c58881p1b49a0jsnee4e354f197c"; // ide helyettesítsd be a saját API kulcsodat
         
         String queryParams = String.format("?country=%s&title=%s", country, title);
 

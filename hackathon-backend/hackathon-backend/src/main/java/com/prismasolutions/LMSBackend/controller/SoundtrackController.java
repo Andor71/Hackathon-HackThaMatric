@@ -25,11 +25,15 @@ public class SoundtrackController {
     {
         log.info("Entered in getSoundtrack");
         try{
+            System.out.println("1");
             return ResponseEntity.ok().body(soundTrackService.getSoundtrack(movieTitle));
         }catch (JSONException e){
+            System.out.println("2");
+
             return ResponseEntity.status(301).build();
         }
         catch (Exception e){
+            System.out.println("3");
             return  ResponseEntity.badRequest().build();
         }
     }
