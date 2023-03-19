@@ -58,7 +58,7 @@ public class SoundTrackServiceImpl implements SoundTrackService {
     @Override
     public List<MusicDto> getSoundtrack(String movieTitle) {
         String serviceUrl = "https://api.openai.com/v1/chat/completions";
-        String bearerToken = "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";
+        String bearerToken = "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";
         String requestBody = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"Add visza az összes zene számot a következő című filmből: "+movieTitle+" , a választ add vissza ebben a formában : [{'musicTitle'}]\"}]}";
 
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -74,6 +74,7 @@ public class SoundTrackServiceImpl implements SoundTrackService {
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             JSONObject jsonObject = new JSONObject(response.body());
+            System.out.println(response);
 
             JSONArray movieNamesArray = jsonObject.getJSONArray("choices");
             JSONObject movieNames = movieNamesArray.getJSONObject(0);
@@ -119,10 +120,11 @@ public class SoundTrackServiceImpl implements SoundTrackService {
             e.printStackTrace();
         }
         System.out.println(musics);
-//        int notGoodIndex = musics.get(0).getTitle().indexOf(".*\\\\n.*\\\\n.*");
-//        if(notGoodIndex != 0)
+//        String delimiter = ",\\";
+//        int notGoodIndex = musics.get(0).getTitle().indexOf(",\\");
+//        if(notGoodIndex != -1)
 //            getSoundtrack(movieTitle);
-        //TODO restart if the format is bad
+//        //TODO restart if the format is bad
         return musics;
     }
 }
