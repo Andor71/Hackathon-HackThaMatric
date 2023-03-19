@@ -94,7 +94,7 @@ public class Utility {
                             }
                         }
 
-                        streamingDto.setLink("link");
+                        streamingDto.setLink(streaming.getString("link"));
 
                         Iterator<String> keysStreaming = streaming.keys();
                         List<String> subtitles = new ArrayList<>();

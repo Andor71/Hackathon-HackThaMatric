@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface StreamService {
 
-    List<MoviesByStreamingDto> getAllByTitle(String title) throws IOException, JSONException;
+    List<MoviesByStreamingDto> getAllByTitle(String title,String country) throws IOException, JSONException;
 }

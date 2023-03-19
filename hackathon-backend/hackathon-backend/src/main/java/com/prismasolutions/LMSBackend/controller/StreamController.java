@@ -25,10 +25,10 @@ public class StreamController {
     }
 
     @GetMapping("/get-by-title")
-    public  ResponseEntity<?> getByTitle(@RequestParam String title)
+    public  ResponseEntity<?> getByTitle(@RequestParam String title,@RequestParam String country)
     {
         try{
-            return ResponseEntity.ok().body(streamService.getAllByTitle(title));
+            return ResponseEntity.ok().body(streamService.getAllByTitle(title,country));
         }catch (JSONException e){
             return ResponseEntity.status(301).build();
         }

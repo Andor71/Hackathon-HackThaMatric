@@ -19,14 +19,12 @@ public class StreamServiceImpl implements StreamService {
 
     private final Utility utility;
     @Override
-    public List<MoviesByStreamingDto> getAllByTitle(String title) throws IOException, JSONException {
+    public List<MoviesByStreamingDto> getAllByTitle(String title,String country) throws IOException, JSONException {
+
 
         String url = "https://streaming-availability.p.rapidapi.com/v2/search/title";
-        String apiKey = "1f6ac10dcamsh091a1e09cced23ap1d57afjsn886a6d651fd1"; // ide helyettesítsd be a saját API kulcsodat
-
-        // query paraméterek hozzáadása
-//        String language = "en"; // példa nyelv
-        String country = "RO"; // példa ország
+        String apiKey = "94de3a99d3msh8fe41434776a203p173f5fjsn8a5adb7b5f3d"; // ide helyettesítsd be a saját API kulcsodat
+        
         String queryParams = String.format("?country=%s&title=%s", country, title);
 
         URL apiUrl = new URL(url + queryParams);
