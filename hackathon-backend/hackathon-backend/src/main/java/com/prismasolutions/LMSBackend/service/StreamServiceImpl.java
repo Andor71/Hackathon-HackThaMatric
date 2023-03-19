@@ -62,6 +62,8 @@ public class StreamServiceImpl implements StreamService {
             }
         }
 
+        streaming.add(null);
+
         Long id = Long.valueOf(0);
         for(String stream : streaming){
             MoviesByStreamingDto moviesByStreamingDto = new MoviesByStreamingDto();
@@ -70,10 +72,16 @@ public class StreamServiceImpl implements StreamService {
             moviesByStreamingDto.setMovies(new ArrayList<>());
             moviesByGenreDtos.add(moviesByStreamingDto);
         }
-
+        System.out.println(moviesByGenreDtos);
+        System.out.println(movieDtos);
         for(MoviesByStreamingDto moviesByStreamingDto : moviesByGenreDtos){
             for(int i = 0 ; i < movieDtos.size() ; i++) {
+                if(movieDtos.get(i).getStreamingInfoDto().getStreamingDto().size() == 0 && moviesByStreamingDto.getStreaming() == null){
+                    moviesByStreamingDto.getMovies().add(movieDtos.get(i));
+                }
                 for(int j = 0 ; j < movieDtos.get(i).getStreamingInfoDto().getStreamingDto().size(); j++){
+
+                    System.out.println( movieDtos.get(i).getStreamingInfoDto().getStreamingDto());
                     if (movieDtos.get(i).getStreamingInfoDto().getStreamingDto().get(j).getName().equals(moviesByStreamingDto.getStreaming())) {
                         moviesByStreamingDto.getMovies().add(movieDtos.get(i));
                     }
