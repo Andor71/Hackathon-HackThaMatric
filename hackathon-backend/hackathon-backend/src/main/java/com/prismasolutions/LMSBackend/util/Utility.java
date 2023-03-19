@@ -16,9 +16,7 @@ import java.util.List;
 public class Utility {
     static Long movieID = Long.valueOf(0);
     static Long streamInfoId = Long.valueOf(0);
-
     static Long streamId = Long.valueOf(0);
-        //TODO cast , year,imd ,imdbid,im, audanceage,votecount,genres,backdorphoto,director,poster
     public List<MovieDto> convertJSONToMovieDto(String data) throws JSONException {
         JSONObject json = new JSONObject(data);
         JSONArray jsonArray = json.getJSONArray("result");
