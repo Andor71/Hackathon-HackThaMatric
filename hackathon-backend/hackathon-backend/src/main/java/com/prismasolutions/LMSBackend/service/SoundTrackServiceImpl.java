@@ -122,6 +122,7 @@ public class SoundTrackServiceImpl implements SoundTrackService {
 //        int notGoodIndex = musics.get(0).getTitle().indexOf(".*\\\\n.*\\\\n.*");
 //        if(notGoodIndex != 0)
 //            getSoundtrack(movieTitle);
+        //TODO restart if the format is bad
         return musics;
     }
 }
